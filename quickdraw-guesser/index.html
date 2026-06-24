@@ -3,695 +3,134 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QuickDraw – KI-Rategame</title>
+  <title>QuickDraw — Playground</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
-  <style>
-    :root {
-      --bg: #0d0d1a;
-      --surface: #13132b;
-      --card: #1a1a35;
-      --border: rgba(255,255,255,0.08);
-      --accent: #7c6aff;
-      --accent2: #ff6ab0;
-      --green: #3dffa0;
-      --text: #e8e8f0;
-      --muted: #888aaa;
-      --radius: 16px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 16px;
-    }
-
-    .stars {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      background:
-        radial-gradient(ellipse at 20% 30%, rgba(124,106,255,.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 70%, rgba(255,106,176,.06) 0%, transparent 60%);
-    }
-    .stars::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image:
-        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,.6), transparent),
-        radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,.5), transparent),
-        radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,.7), transparent),
-        radial-gradient(1px 1px at 80% 45%, rgba(255,255,255,.4), transparent),
-        radial-gradient(1px 1px at 25% 80%, rgba(255,255,255,.5), transparent),
-        radial-gradient(1px 1px at 90% 25%, rgba(255,255,255,.6), transparent);
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 28px;
-      position: relative; z-index: 1;
-    }
-    .back-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      color: var(--muted); text-decoration: none; font-size: .85rem;
-      margin-bottom: 16px; transition: color .2s;
-    }
-    .back-link:hover { color: var(--text); }
-    h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 6px;
-    }
-    .subtitle { color: var(--muted); font-size: .9rem; }
-
-    .game-layout {
-      display: grid;
-      grid-template-columns: 200px auto 220px;
-      gap: 20px;
-      align-items: start;
-      width: 100%;
-      max-width: 920px;
-      position: relative; z-index: 1;
-    }
-    @media (max-width: 720px) {
-      .game-layout { grid-template-columns: 1fr; }
-    }
-
-    .word-card, .predictions-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
-    .card-label {
-      font-size: .72rem;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .word-to-draw {
-      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
-      font-weight: 800;
-      color: var(--accent);
-      margin-bottom: 4px;
-      line-height: 1.2;
-    }
-    .word-en { font-size: .78rem; color: var(--muted); margin-bottom: 18px; }
-
-    .timer {
-      font-size: 2.4rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--text);
-    }
-    .timer.fast { color: var(--green); }
-    .timer.slow { color: #ffb347; }
-
-    .pen-label {
-      font-size: .72rem; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .1em;
-      margin: 18px 0 8px;
-    }
-    .pen-sizes { display: flex; gap: 8px; align-items: center; }
-    .pen-btn {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--card); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color .15s;
-    }
-    .pen-btn.active { border-color: var(--accent); }
-    .pen-dot { background: #1a1a1a; border-radius: 50%; }
-
-    .canvas-wrap {
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-    }
-    #canvas-container canvas {
-      border-radius: 12px;
-      border: 3px solid var(--border);
-      cursor: crosshair;
-      display: block;
-      transition: box-shadow .3s;
-    }
-    #canvas-container.drawing canvas { box-shadow: 0 0 20px 4px rgba(124,106,255,.3); }
-    #canvas-container.win canvas    { box-shadow: 0 0 30px 8px rgba(61,255,160,.5); }
-
-    .canvas-controls { display: flex; gap: 10px; }
-    .btn {
-      padding: 9px 20px; border-radius: 10px; border: none;
-      font-size: .9rem; font-weight: 600; cursor: pointer; transition: all .15s;
-    }
-    .btn-outline {
-      background: transparent; border: 1px solid var(--border); color: var(--muted);
-    }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
-    }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(124,106,255,.4); }
-
-    .round-info { font-size: .75rem; color: var(--muted); }
-
-    /* predictions */
-    .status-dot {
-      display: inline-block; width: 8px; height: 8px;
-      border-radius: 50%; margin-right: 6px;
-    }
-    .status-dot.loading { background: #ffb347; animation: pulse 1s infinite; }
-    .status-dot.ready   { background: var(--green); }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-    .pred-list { display: flex; flex-direction: column; gap: 8px; }
-    .pred-item { display: flex; flex-direction: column; gap: 3px; }
-    .pred-top  { display: flex; justify-content: space-between; align-items: center; }
-    .pred-name { font-size: .88rem; font-weight: 600; transition: color .2s; }
-    .pred-name.match { color: var(--green); }
-    .pred-pct  { font-size: .78rem; color: var(--muted); }
-    .pred-bar-wrap { height: 4px; background: rgba(255,255,255,.07); border-radius: 2px; }
-    .pred-bar  { height: 100%; border-radius: 2px; background: var(--accent); transition: width .3s ease; }
-    .pred-bar.match { background: var(--green); }
-
-    .top-guess-wrap { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-    .top-guess { font-size: 1.15rem; font-weight: 700; }
-
-    /* start screen */
-    .start-screen {
-      position: fixed; inset: 0; background: var(--bg);
-      z-index: 90; display: flex; align-items: center; justify-content: center;
-    }
-    .start-box { text-align: center; max-width: 480px; padding: 20px; }
-    .start-box h2 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
-    .start-box p  { color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
-    .model-status {
-      display: flex; align-items: center; justify-content: center;
-      gap: 8px; margin-bottom: 20px; font-size: .9rem; color: var(--muted);
-    }
-
-    /* win overlay */
-    .win-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
-      z-index: 100; align-items: center; justify-content: center;
-    }
-    .win-overlay.show { display: flex; }
-    .win-box {
-      background: var(--card); border: 1px solid var(--green);
-      border-radius: 24px; padding: 40px 48px; text-align: center;
-      box-shadow: 0 0 60px rgba(61,255,160,.2); max-width: 400px;
-    }
-    .win-emoji { font-size: 3.5rem; margin-bottom: 12px; }
-    .win-title { font-size: 1.8rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
-    .win-sub   { color: var(--muted); margin-bottom: 20px; }
-    .win-time  { font-size: 2.8rem; font-weight: 800; color: var(--text); }
-    .win-time-label { color: var(--muted); font-size: .85rem; margin-bottom: 24px; }
-
-    .confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="stars"></div>
+
 <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
 
 <!-- Start screen -->
-<div class="start-screen" id="startScreen">
-  <div class="start-box">
-    <div style="font-size:3rem;margin-bottom:16px">🎨</div>
+<div class="overlay" id="startScreen">
+  <div class="overlay-box">
+    <div class="overlay-icon">🎨</div>
     <h2>QuickDraw</h2>
     <p>
       Du bekommst ein Wort – zeichne es so schnell wie möglich!<br>
-      Die KI versucht in Echtzeit zu erraten, was du zeichnest.<br>
-      Je schneller sie es erkennt, desto besser dein Score.
+      Die KI versucht in Echtzeit zu erraten, was du malst.
     </p>
     <div class="model-status">
       <span class="status-dot loading" id="statusDot"></span>
       <span id="statusText">KI-Modell wird geladen…</span>
     </div>
-    <button class="btn btn-primary" id="startBtn" disabled onclick="startGame()">
-      Spiel starten
-    </button>
+    <div class="overlay-actions">
+      <a class="btn btn-outline" href="../index.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Zurück
+      </a>
+      <button class="btn btn-accent" id="startBtn" disabled onclick="startGame()">
+        Spiel starten
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- Win overlay -->
-<div class="win-overlay" id="winOverlay">
-  <div class="win-box">
-    <div class="win-emoji">🎉</div>
-    <div class="win-title">Erraten!</div>
-    <div class="win-sub" id="winSub"></div>
-    <div class="win-time" id="winTime"></div>
-    <div class="win-time-label">Sekunden</div>
-    <div style="display:flex;gap:10px;justify-content:center">
-      <button class="btn btn-outline" onclick="location.href='../index.html'">← Zurück</button>
+<div class="overlay hidden" id="winOverlay">
+  <div class="overlay-box win">
+    <div class="overlay-icon">🎉</div>
+    <h2>Erraten!</h2>
+    <p id="winSub"></p>
+    <div class="win-time-big" id="winTime"></div>
+    <p class="win-time-label">Sekunden</p>
+    <div class="overlay-actions">
+      <a class="btn btn-outline" href="../index.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Zurück
+      </a>
       <button class="btn btn-primary" onclick="nextRound()">Nächste Runde</button>
     </div>
   </div>
 </div>
 
 <!-- Main UI -->
-<header>
-  <a class="back-link" href="../index.html">← Zurück zum Playground</a>
-  <h1>🎨 QuickDraw</h1>
-  <p class="subtitle">Zeichne – die KI rät!</p>
-</header>
+<div class="wrapper">
 
-<div class="game-layout">
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+    Zurück
+  </a>
 
-  <!-- Left: Word + Timer -->
-  <div class="word-card">
-    <div class="card-label">Zeichne jetzt:</div>
-    <div class="word-to-draw" id="wordDE">–</div>
-    <div class="word-en" id="wordEN"></div>
-    <div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">Zeit</div>
-    <div class="timer" id="timer">0.0s</div>
-    <div class="pen-label">Pinselgröße</div>
-    <div class="pen-sizes">
-      <div class="pen-btn active" data-size="6"  onclick="setPen(this)">
-        <div class="pen-dot" style="width:5px;height:5px"></div>
+  <header class="page-header">
+    <span class="page-icon">🎨</span>
+    <h1>QuickDraw</h1>
+    <p class="subtitle">Zeichne einen Begriff – die KI rät in Echtzeit.</p>
+  </header>
+
+  <div class="game-layout">
+
+    <!-- Left: Word + Timer -->
+    <div class="card">
+      <div class="card-label">Zeichne jetzt</div>
+      <div class="word-to-draw" id="wordDE">–</div>
+      <div class="word-en" id="wordEN"></div>
+      <div class="card-label">Zeit</div>
+      <div class="timer" id="timer">0.0s</div>
+
+      <div class="pen-label">Pinselgröße</div>
+      <div class="pen-sizes">
+        <div class="pen-btn active" data-size="1" onclick="setPen(this)">
+          <div class="pen-dot" style="width:4px;height:4px"></div>
+        </div>
+        <div class="pen-btn" data-size="2" onclick="setPen(this)">
+          <div class="pen-dot" style="width:8px;height:8px"></div>
+        </div>
+        <div class="pen-btn" data-size="3" onclick="setPen(this)">
+          <div class="pen-dot" style="width:13px;height:13px"></div>
+        </div>
       </div>
-      <div class="pen-btn" data-size="13" onclick="setPen(this)">
-        <div class="pen-dot" style="width:10px;height:10px"></div>
+    </div>
+
+    <!-- Center: Canvas -->
+    <div class="canvas-wrap">
+      <div id="canvas-container"></div>
+      <div class="canvas-controls">
+        <button class="btn btn-outline" onclick="clearDrawing()">✕ Löschen</button>
+        <button class="btn btn-outline" onclick="skipWord()">→ Überspringen</button>
       </div>
-      <div class="pen-btn" data-size="22" onclick="setPen(this)">
-        <div class="pen-dot" style="width:17px;height:17px"></div>
+      <div class="round-info">Runde <span id="roundNum">1</span></div>
+    </div>
+
+    <!-- Right: AI predictions -->
+    <div class="card">
+      <div class="card-label">
+        <span class="status-dot ready" id="aiDot"></span>
+        KI-Vermutungen
+      </div>
+      <div class="pred-list" id="predList">
+        <div style="color:var(--muted);font-size:.85rem">Fange an zu zeichnen…</div>
+      </div>
+      <div class="top-guess-wrap">
+        <div class="top-guess-label">Beste Vermutung</div>
+        <div class="top-guess" id="topGuess">–</div>
       </div>
     </div>
-  </div>
 
-  <!-- Center: p5 Canvas -->
-  <div class="canvas-wrap">
-    <div id="canvas-container"></div>
-    <div class="canvas-controls">
-      <button class="btn btn-outline" onclick="clearDrawing()">✕ Löschen</button>
-      <button class="btn btn-outline" onclick="skipWord()">→ Überspringen</button>
-    </div>
-    <div class="round-info">Runde <span id="roundNum">1</span></div>
   </div>
-
-  <!-- Right: AI predictions -->
-  <div class="predictions-card">
-    <div class="card-label">
-      <span class="status-dot ready" id="aiDot"></span>
-      KI-Vermutungen
-    </div>
-    <div class="pred-list" id="predList">
-      <div style="color:var(--muted);font-size:.85rem">Fange an zu zeichnen…</div>
-    </div>
-    <div class="top-guess-wrap">
-      <div style="font-size:.72rem;color:var(--muted);margin-bottom:5px">Beste Vermutung</div>
-      <div class="top-guess" id="topGuess">–</div>
-    </div>
-  </div>
-
 </div>
 
-<script>
-// ─── EN → DE translations (subset of the 345 DoodleNet classes) ────────────────
-const EN_TO_DE = {
-  "aircraft carrier":"Flugzeugträger","airplane":"Flugzeug","alarm clock":"Wecker",
-  "ambulance":"Krankenwagen","angel":"Engel","animal migration":"Tierwanderung",
-  "ant":"Ameise","anvil":"Amboss","apple":"Apfel","arm":"Arm","asparagus":"Spargel",
-  "axe":"Axt","backpack":"Rucksack","banana":"Banane","bandage":"Verband","barn":"Scheune",
-  "baseball bat":"Baseballschläger","basket":"Korb","basketball":"Basketball",
-  "bat":"Fledermaus","bathtub":"Badewanne","beach":"Strand","bear":"Bär","beard":"Bart",
-  "bed":"Bett","bee":"Biene","belt":"Gürtel","bench","Bank","bicycle":"Fahrrad",
-  "bird":"Vogel","birthday cake":"Geburtstagskuchen","blackberry":"Brombeere",
-  "blueberry":"Blaubeere","book":"Buch","boomerang":"Bumerang","bowtie":"Fliege",
-  "bracelet":"Armband","brain":"Gehirn","bread":"Brot","bridge":"Brücke",
-  "broccoli":"Brokkoli","broom":"Besen","bucket":"Eimer","bulldozer":"Bulldozer",
-  "bus":"Bus","bush":"Busch","butterfly":"Schmetterling","cactus":"Kaktus",
-  "cake":"Kuchen","calculator":"Taschenrechner","calendar":"Kalender","camel":"Kamel",
-  "camera":"Kamera","campfire":"Lagerfeuer","candle":"Kerze","cannon":"Kanone",
-  "canoe":"Kanu","car":"Auto","carrot":"Karotte","castle":"Schloss","cat":"Katze",
-  "ceiling fan":"Deckenventilator","cello":"Cello","cell phone":"Handy","chair":"Stuhl",
-  "chandelier":"Kronleuchter","church":"Kirche","circle":"Kreis","clarinet":"Klarinette",
-  "clock":"Uhr","cloud":"Wolke","coffee cup":"Kaffeetasse","compass":"Kompass",
-  "computer":"Computer","cookie":"Keks","couch":"Sofa","cow":"Kuh","crab":"Krabbe",
-  "crayon":"Wachsmalstift","crocodile":"Krokodil","crown":"Krone",
-  "cruise ship":"Kreuzfahrtschiff","cup":"Tasse","diamond":"Diamant",
-  "dishwasher":"Geschirrspüler","diving board":"Sprungbrett","dog":"Hund",
-  "dolphin":"Delphin","donut":"Donut","door":"Tür","dragon":"Drache",
-  "dresser":"Kommode","drill":"Bohrer","drums":"Schlagzeug","duck":"Ente",
-  "dumbbell":"Hantel","ear":"Ohr","elbow":"Ellenbogen","elephant":"Elefant",
-  "envelope":"Briefumschlag","eraser":"Radiergummi","eye":"Auge","eyeglasses":"Brille",
-  "face":"Gesicht","fan":"Fächer","feather":"Feder","fence":"Zaun","finger":"Finger",
-  "fire hydrant":"Hydrant","fireplace":"Kamin","firetruck":"Feuerwehrauto","fish":"Fisch",
-  "flamingo":"Flamingo","flashlight":"Taschenlampe","flip flops":"Flipflops",
-  "floor lamp":"Stehlampe","flower":"Blume","flying saucer":"Fliegende Untertasse",
-  "foot":"Fuß","fork":"Gabel","frog":"Frosch","frying pan":"Bratpfanne",
-  "garden":"Garten","garden hose":"Gartenschlauch","giraffe":"Giraffe",
-  "golf club":"Golfschläger","grapes":"Weintrauben","grass":"Gras","guitar":"Gitarre",
-  "hamburger":"Hamburger","hammer":"Hammer","hand":"Hand","harp":"Harfe","hat":"Hut",
-  "headphones":"Kopfhörer","hedgehog":"Igel","helicopter":"Hubschrauber","helmet":"Helm",
-  "hexagon":"Sechseck","hockey puck":"Puck","hockey stick":"Hockeyschläger",
-  "horse":"Pferd","hospital":"Krankenhaus","hot air balloon":"Heißluftballon",
-  "hot dog":"Hotdog","hourglass":"Sanduhr","house":"Haus","house plant":"Zimmerpflanze",
-  "hurricane":"Hurrikan","ice cream":"Eis","jacket":"Jacke","jail":"Gefängnis",
-  "kangaroo":"Känguru","key":"Schlüssel","keyboard":"Tastatur","knee":"Knie",
-  "knife":"Messer","ladder":"Leiter","lantern":"Laterne","laptop":"Laptop",
-  "leaf":"Blatt","leg":"Bein","light bulb":"Glühbirne","lighthouse":"Leuchtturm",
-  "lightning":"Blitz","line":"Linie","lion":"Löwe","lipstick":"Lippenstift",
-  "lobster":"Hummer","lollipop":"Lutscher","mailbox":"Briefkasten","map":"Karte",
-  "marker":"Marker","matches":"Streichhölzer","megaphone":"Megaphon",
-  "mermaid":"Meerjungfrau","microphone":"Mikrofon","microwave":"Mikrowelle",
-  "monkey":"Affe","moon":"Mond","mosquito":"Mücke","motorbike":"Motorrad",
-  "mountain":"Berg","mouse":"Maus","mug":"Becher","mushroom":"Pilz","nail":"Nagel",
-  "necklace":"Halskette","nose":"Nase","octopus":"Oktopus","onion":"Zwiebel",
-  "oven":"Ofen","owl":"Eule","paint can":"Farbdose","paintbrush":"Pinsel",
-  "palm tree":"Palme","panda":"Panda","pants":"Hose","paper clip":"Büroklammer",
-  "parachute":"Fallschirm","parrot":"Papagei","peanut":"Erdnuss","pear":"Birne",
-  "peas":"Erbsen","pencil":"Bleistift","penguin":"Pinguin","piano":"Klavier",
-  "pickup truck":"Pickup-Truck","pig":"Schwein","pillow":"Kissen","pineapple":"Ananas",
-  "pizza":"Pizza","pliers":"Zange","police car":"Polizeiauto","pond":"Teich",
-  "pool":"Schwimmbad","popsicle":"Eis am Stiel","postcard":"Postkarte",
-  "potato":"Kartoffel","power outlet":"Steckdose","purse":"Handtasche",
-  "rabbit":"Hase","raccoon":"Waschbär","radio":"Radio","rain":"Regen",
-  "rainbow":"Regenbogen","rake":"Rechen","remote control":"Fernbedienung",
-  "rhinoceros":"Nashorn","rifle":"Gewehr","river":"Fluss",
-  "roller coaster":"Achterbahn","rollerskates":"Rollschuhe","sailboat":"Segelboot",
-  "sandwich":"Sandwich","saxophone":"Saxophon","scissors":"Schere",
-  "scorpion":"Skorpion","screwdriver":"Schraubenzieher","sea turtle":"Meeresschildkröte",
-  "see saw":"Wippe","shark":"Hai","sheep":"Schaf","shoe":"Schuh","shorts":"Shorts",
-  "shovel":"Schaufel","sink":"Waschbecken","skateboard":"Skateboard",
-  "skull":"Totenschädel","sleeping bag":"Schlafsack","smiley face":"Smiley",
-  "snail":"Schnecke","snake":"Schlange","snorkel":"Schnorchel",
-  "snowflake":"Schneeflocke","snowman":"Schneemann","soccer ball":"Fußball",
-  "sock":"Socke","speedboat":"Schnellboot","spider":"Spinne","square":"Quadrat",
-  "squiggle":"Schnörkel","squirrel":"Eichhörnchen","stairs":"Treppe","star":"Stern",
-  "steak":"Steak","stereo":"Stereoanlage","stethoscope":"Stethoskop",
-  "stitches":"Nähte","stop sign":"Stoppschild","stove":"Herd",
-  "strawberry":"Erdbeere","streetlight":"Straßenlaterne","string bean":"Grüne Bohne",
-  "submarine":"U-Boot","suitcase":"Koffer","sun":"Sonne","swan":"Schwan",
-  "sweater":"Pullover","swing set":"Schaukelgestell","sword":"Schwert",
-  "syringe":"Spritze","t-shirt":"T-Shirt","table":"Tisch","teapot":"Teekanne",
-  "teddy-bear":"Teddybär","telephone":"Telefon","television":"Fernseher",
-  "tennis racquet":"Tennisschläger","tent":"Zelt",
-  "the eiffel tower":"Eiffelturm","the great wall of china":"Chinesische Mauer",
-  "the mona lisa":"Mona Lisa","tiger":"Tiger","toaster":"Toaster","toe":"Zehe",
-  "toilet":"Toilette","tooth":"Zahn","toothbrush":"Zahnbürste",
-  "toothpaste":"Zahnpasta","tornado":"Tornado","tractor":"Traktor",
-  "traffic light":"Ampel","train":"Zug","tree":"Baum","triangle":"Dreieck",
-  "trombone":"Posaune","truck":"LKW","trumpet":"Trompete","umbrella":"Regenschirm",
-  "underwear":"Unterwäsche","van":"Lieferwagen","vase":"Vase","violin":"Violine",
-  "washing machine":"Waschmaschine","watermelon":"Wassermelone","whale":"Wal",
-  "wheel":"Rad","windmill":"Windmühle","wine bottle":"Weinflasche",
-  "wine glass":"Weinglas","wristwatch":"Armbanduhr","yoga":"Yoga",
-  "zebra":"Zebra","zigzag":"Zickzack"
-};
+<footer>
+  gemacht mit ♥ &mdash; <a href="../index.html">Playground</a>
+</footer>
 
-// Spielbare Wörter (bekannte, gut zeichenbare Begriffe)
-const PLAYABLE = [
-  "airplane","alarm clock","apple","axe","banana","basketball","bat","bathtub",
-  "bear","bee","bicycle","bird","birthday cake","book","bridge","broccoli",
-  "broom","bus","butterfly","cactus","cake","camel","camera","campfire",
-  "candle","car","carrot","castle","cat","clock","cloud","coffee cup",
-  "compass","computer","cookie","couch","cow","crab","crown","cup",
-  "diamond","dog","dolphin","door","dragon","drums","duck","ear","elephant",
-  "eye","eyeglasses","face","feather","fence","fish","flamingo","flashlight",
-  "flower","fork","frog","frying pan","giraffe","grapes","guitar",
-  "hamburger","hammer","hand","hat","headphones","hedgehog","helicopter",
-  "horse","hot air balloon","hot dog","hourglass","house","ice cream",
-  "jacket","kangaroo","key","keyboard","knife","ladder","leaf","light bulb",
-  "lighthouse","lightning","lion","lobster","lollipop","mailbox","moon",
-  "mountain","mouse","mug","mushroom","octopus","owl","palm tree","panda",
-  "pencil","penguin","piano","pig","pineapple","pizza","rabbit","radio",
-  "rain","rainbow","rhinoceros","sailboat","saxophone","scissors","shark",
-  "sheep","shoe","skull","snail","snake","snowflake","snowman","soccer ball",
-  "spider","squirrel","stairs","star","strawberry","submarine","suitcase",
-  "sun","swan","sword","table","teapot","teddy-bear","telephone","television",
-  "tent","tiger","toilet","tooth","toothbrush","tornado","tractor",
-  "traffic light","train","tree","triangle","truck","trumpet","umbrella",
-  "vase","violin","whale","windmill","wine glass","zebra"
-];
-
-// ─── State ─────────────────────────────────────────────────────────────────────
-let classifier = null;
-let p5sketch = null;
-let currentWord = null; // {en, de}
-let penSize = 6;
-let timerInterval = null;
-let startTime = null;
-let hasDrawn = false;
-let round = 1;
-let won = false;
-let inferInterval = null;
-
-function toDE(en) {
-  return EN_TO_DE[en.toLowerCase()] || en;
-}
-
-// ─── p5 sketch ─────────────────────────────────────────────────────────────────
-new p5(function(p) {
-  p5sketch = p;
-  let isDrawing = false;
-
-  p.setup = function() {
-    const cnv = p.createCanvas(300, 300);
-    cnv.parent('canvas-container');
-    p.background(255);
-    p.strokeCap(p.ROUND);
-    p.strokeJoin(p.ROUND);
-  };
-
-  p.draw = function() {};
-
-  p.mousePressed = function() {
-    if (!isInCanvas()) return;
-    isDrawing = true;
-    document.getElementById('canvas-container').classList.add('drawing');
-    if (!hasDrawn && !won) { hasDrawn = true; startTimer(); }
-    p.background(255); // handled per-stroke, just track start
-    p.stroke(0); p.strokeWeight(penSize); p.noFill();
-    p.beginShape();
-    p.vertex(p.mouseX, p.mouseY);
-  };
-
-  p.mouseDragged = function() {
-    if (!isDrawing || won) return;
-    p.stroke(0); p.strokeWeight(penSize); p.noFill();
-    p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
-  };
-
-  p.mouseReleased = function() {
-    isDrawing = false;
-    document.getElementById('canvas-container').classList.remove('drawing');
-  };
-
-  // Touch
-  p.touchStarted = function() {
-    if (!isInCanvas()) return false;
-    isDrawing = true;
-    document.getElementById('canvas-container').classList.add('drawing');
-    if (!hasDrawn && !won) { hasDrawn = true; startTimer(); }
-    return false;
-  };
-  p.touchMoved = function() {
-    if (!isDrawing || won) return false;
-    p.stroke(0); p.strokeWeight(penSize); p.noFill();
-    const t = p.touches[0];
-    const r = p.canvas.getBoundingClientRect();
-    const sx = p.width / r.width; const sy = p.height / r.height;
-    const x = (t.clientX - r.left) * sx;
-    const y = (t.clientY - r.top) * sy;
-    p.line(p.pmouseX, p.pmouseY, x, y);
-    return false;
-  };
-  p.touchEnded = function() {
-    isDrawing = false;
-    document.getElementById('canvas-container').classList.remove('drawing');
-    return false;
-  };
-
-  function isInCanvas() {
-    const r = p.canvas.getBoundingClientRect();
-    return p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height;
-  }
-});
-
-// ─── ml5 DoodleNet ─────────────────────────────────────────────────────────────
-function initClassifier() {
-  // ml5 DoodleNet: QuickDraw model with 345 categories
-  classifier = ml5.imageClassifier('DoodleNet', () => {
-    document.getElementById('statusDot').className = 'status-dot ready';
-    document.getElementById('statusText').textContent = 'KI bereit!';
-    document.getElementById('startBtn').disabled = false;
-  });
-}
-
-// ─── Game ──────────────────────────────────────────────────────────────────────
-function startGame() {
-  document.getElementById('startScreen').style.display = 'none';
-  nextRound();
-}
-
-function nextRound() {
-  won = false;
-  hasDrawn = false;
-  stopTimer();
-  clearInterval(inferInterval);
-  document.getElementById('winOverlay').classList.remove('show');
-  document.getElementById('canvas-container').classList.remove('win');
-
-  // pick random word
-  const en = PLAYABLE[Math.floor(Math.random() * PLAYABLE.length)];
-  currentWord = { en, de: toDE(en) };
-  document.getElementById('wordDE').textContent = currentWord.de;
-  document.getElementById('wordEN').textContent = '(' + currentWord.en + ')';
-  document.getElementById('roundNum').textContent = round++;
-  document.getElementById('timer').textContent = '0.0s';
-  document.getElementById('timer').className = 'timer';
-  document.getElementById('topGuess').textContent = '–';
-  document.getElementById('predList').innerHTML =
-    '<div style="color:var(--muted);font-size:.85rem">Fange an zu zeichnen…</div>';
-
-  if (p5sketch) {
-    p5sketch.background(255);
-  }
-
-  // classify loop
-  inferInterval = setInterval(runClassify, 500);
-}
-
-window.skipWord = function() { nextRound(); };
-
-window.clearDrawing = function() {
-  if (p5sketch) p5sketch.background(255);
-  hasDrawn = false;
-  stopTimer();
-  document.getElementById('timer').textContent = '0.0s';
-  document.getElementById('timer').className = 'timer';
-  document.getElementById('predList').innerHTML =
-    '<div style="color:var(--muted);font-size:.85rem">Fange an zu zeichnen…</div>';
-  document.getElementById('topGuess').textContent = '–';
-};
-
-window.setPen = function(el) {
-  penSize = parseInt(el.dataset.size);
-  document.querySelectorAll('.pen-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-};
-
-// ─── Timer ─────────────────────────────────────────────────────────────────────
-function startTimer() {
-  startTime = Date.now();
-  timerInterval = setInterval(() => {
-    const s = (Date.now() - startTime) / 1000;
-    const el = document.getElementById('timer');
-    el.textContent = s.toFixed(1) + 's';
-    el.className = 'timer ' + (s < 10 ? 'fast' : s < 20 ? '' : 'slow');
-  }, 100);
-}
-function stopTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-}
-
-// ─── Classification ─────────────────────────────────────────────────────────────
-function runClassify() {
-  if (!classifier || !hasDrawn || won || !p5sketch) return;
-  classifier.classify(p5sketch.canvas, (err, results) => {
-    if (err || !results || won) return;
-    updatePredUI(results.slice(0, 5));
-    const top = results[0];
-    if (top && top.label.toLowerCase() === currentWord.en.toLowerCase() && top.confidence > 0.35) {
-      triggerWin();
-    }
-  });
-}
-
-function updatePredUI(results) {
-  const target = currentWord.en.toLowerCase();
-  const list = document.getElementById('predList');
-  list.innerHTML = '';
-  results.forEach(r => {
-    const name = r.label;
-    const de = toDE(name);
-    const pct = Math.round(r.confidence * 100);
-    const isMatch = name.toLowerCase() === target;
-    const item = document.createElement('div');
-    item.className = 'pred-item';
-    item.innerHTML = `
-      <div class="pred-top">
-        <span class="pred-name ${isMatch ? 'match' : ''}">${de}</span>
-        <span class="pred-pct">${pct}%</span>
-      </div>
-      <div class="pred-bar-wrap">
-        <div class="pred-bar ${isMatch ? 'match' : ''}" style="width:${Math.min(pct,100)}%"></div>
-      </div>`;
-    list.appendChild(item);
-  });
-  if (results[0]) {
-    document.getElementById('topGuess').textContent = toDE(results[0].label);
-  }
-}
-
-function triggerWin() {
-  if (won) return;
-  won = true;
-  stopTimer();
-  clearInterval(inferInterval);
-  document.getElementById('canvas-container').classList.add('win');
-  const elapsed = startTime ? ((Date.now() - startTime) / 1000).toFixed(1) : '?';
-  document.getElementById('winSub').textContent = `Die KI hat "${currentWord.de}" erkannt!`;
-  document.getElementById('winTime').textContent = elapsed;
-  document.getElementById('winOverlay').classList.add('show');
-  launchConfetti();
-}
-
-// ─── Confetti ───────────────────────────────────────────────────────────────────
-function launchConfetti() {
-  const cc = document.getElementById('confettiCanvas');
-  cc.width = window.innerWidth; cc.height = window.innerHeight;
-  const cctx = cc.getContext('2d');
-  const colors = ['#7c6aff','#ff6ab0','#3dffa0','#ffb347','#4fc3f7'];
-  const pieces = Array.from({length:130}, () => ({
-    x: Math.random() * cc.width,
-    y: -10 - Math.random() * 300,
-    r: 4 + Math.random() * 7,
-    color: colors[Math.floor(Math.random()*colors.length)],
-    vx: (Math.random()-.5)*5,
-    vy: 2 + Math.random()*5,
-    angle: Math.random()*360,
-    spin: (Math.random()-.5)*7
-  }));
-  let frame = 0;
-  function animate() {
-    cctx.clearRect(0, 0, cc.width, cc.height);
-    pieces.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.angle += p.spin;
-      cctx.save();
-      cctx.translate(p.x, p.y);
-      cctx.rotate(p.angle * Math.PI/180);
-      cctx.fillStyle = p.color;
-      cctx.fillRect(-p.r/2, -p.r/2, p.r, p.r);
-      cctx.restore();
-    });
-    frame++;
-    if (frame < 150) requestAnimationFrame(animate);
-    else cctx.clearRect(0, 0, cc.width, cc.height);
-  }
-  animate();
-}
-
-// ─── Start loading ──────────────────────────────────────────────────────────────
-window.startGame = startGame;
-window.nextRound = nextRound;
-
-// Wait for ml5 to be available
-(function waitForMl5() {
-  if (typeof ml5 !== 'undefined') {
-    initClassifier();
-  } else {
-    setTimeout(waitForMl5, 100);
-  }
-})();
-</script>
+<script src="game.js"></script>
 </body>
 </html>

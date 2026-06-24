@@ -1,0 +1,153 @@
+@import url('../shared.css');
+
+/* ── layout ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.back { padding-top: 28px; }
+
+/* ── game layout ── */
+.game-layout {
+  display: grid;
+  grid-template-columns: 200px auto 230px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 740px) {
+  .game-layout { grid-template-columns: 1fr; }
+}
+
+/* ── word card ── */
+.card-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue-3);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.word-to-draw {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.word-en { font-size: .78rem; color: var(--muted); margin-bottom: 20px; }
+
+.timer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--text);
+  transition: color .3s;
+}
+.timer.fast { color: var(--green); }
+.timer.slow { color: var(--orange); }
+
+/* ── pen sizes ── */
+.pen-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue-3);
+  margin: 20px 0 10px;
+}
+.pen-sizes { display: flex; gap: 8px; align-items: center; }
+.pen-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2px solid var(--card-border);
+  background: rgba(61,90,254,.06);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, background .15s;
+}
+.pen-btn:hover  { border-color: rgba(61,90,254,.55); }
+.pen-btn.active { border-color: var(--accent); background: rgba(0,229,255,.08); }
+.pen-dot { background: var(--text); border-radius: 50%; }
+
+/* ── canvas ── */
+.canvas-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+#canvas-container canvas {
+  border-radius: 12px;
+  border: 2px solid var(--card-border);
+  cursor: crosshair;
+  display: block;
+  transition: border-color .3s, box-shadow .3s;
+}
+#canvas-container.drawing canvas {
+  border-color: rgba(61,90,254,.6);
+  box-shadow: 0 0 24px rgba(61,90,254,.25);
+}
+#canvas-container.win canvas {
+  border-color: rgba(0,229,255,.5);
+  box-shadow: 0 0 32px rgba(0,229,255,.25);
+}
+
+.canvas-controls { display: flex; gap: 10px; }
+.round-info { font-size: 12px; color: var(--muted); }
+
+/* ── predictions card ── */
+.pred-list { display: flex; flex-direction: column; gap: 10px; }
+.pred-item { display: flex; flex-direction: column; gap: 4px; }
+.pred-top  { display: flex; justify-content: space-between; align-items: center; }
+.pred-name { font-size: .88rem; font-weight: 600; color: var(--text); transition: color .2s; }
+.pred-name.match { color: var(--accent); }
+.pred-pct  { font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: var(--muted); }
+.pred-bar-wrap { height: 3px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+.pred-bar  { height: 100%; border-radius: 2px; background: var(--blue-2); transition: width .3s ease; }
+.pred-bar.match { background: var(--accent); }
+
+.top-guess-wrap {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-border);
+}
+.top-guess-label { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--blue-3); margin-bottom: 6px; }
+.top-guess { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--text); }
+
+/* ── start screen ── */
+#startScreen { z-index: 90; }
+#startScreen .overlay-box p { margin-bottom: 20px; }
+.model-status {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; font-size: .9rem; color: var(--muted);
+  margin-bottom: 24px;
+}
+
+/* ── win overlay ── */
+.win-time-big {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 3rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  margin: 8px 0 4px;
+}
+.win-time-label { font-size: .82rem; color: var(--muted); margin-bottom: 0; }
+
+/* ── confetti ── */
+.confetti-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 200;
+}

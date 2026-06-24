@@ -1,47 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:          #04071a;
-  --bg2:         #080e2e;
-  --blue-1:      #1a2fff;
-  --blue-2:      #3d5afe;
-  --blue-3:      #7c9dff;
-  --blue-4:      #b0c4ff;
-  --accent:      #00e5ff;
-  --text:        #e8eeff;
-  --muted:       #6b7db3;
-  --card-bg:     #0c1340;
-  --card-border: rgba(61, 90, 254, 0.3);
-
-  --weak:   #ff4d6d;
-  --fair:   #ff9500;
-  --good:   #ffe600;
-  --strong: #00e676;
-  --great:  #00e5ff;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 10%, rgba(26,47,255,.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(0,229,255,.10) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
+@import url('../shared.css');
 
 /* ── layout ── */
 .wrapper {
@@ -52,60 +9,20 @@ body::before {
   padding: 0 24px 80px;
 }
 
-/* ── back link ── */
-.back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 28px 0 0;
-  font-size: 13px;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color .2s;
-}
-.back:hover { color: var(--blue-3); }
-.back svg { width: 16px; height: 16px; }
+.back { padding-top: 28px; }
+.page-header { padding: 48px 0 40px; }
 
-/* ── header ── */
-header {
-  text-align: center;
-  padding: 48px 0 40px;
-}
-
-.page-icon {
-  font-size: 48px;
-  display: block;
-  margin-bottom: 16px;
-  line-height: 1;
-}
-
-h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(32px, 6vw, 52px);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -.02em;
-  background: linear-gradient(135deg, #fff 0%, var(--blue-3) 50%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 12px;
-}
-
-.subtitle {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.6;
+/* ── strength indicator colors ── */
+:root {
+  --weak:   #ff4d6d;
+  --fair:   #ff9500;
+  --good:   #ffe600;
+  --strong: #00e676;
+  --great:  #00e5ff;
 }
 
 /* ── input card ── */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 28px 28px 24px;
-  margin-bottom: 16px;
-}
+.card { margin-bottom: 16px; }
 
 .input-label {
   font-size: 11px;
@@ -197,7 +114,7 @@ h1 {
 .entropy-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
+  border-radius: var(--radius);
   padding: 24px 28px;
   margin-bottom: 16px;
   display: flex;
@@ -261,7 +178,7 @@ h1 {
 .crack-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
+  border-radius: var(--radius);
   padding: 24px 28px;
 }
 
@@ -278,21 +195,10 @@ h1 {
   width: 100%;
   border-collapse: collapse;
 }
-
-.crack-table tr {
-  border-bottom: 1px solid rgba(61,90,254,.1);
-}
+.crack-table tr { border-bottom: 1px solid rgba(61,90,254,.1); }
 .crack-table tr:last-child { border-bottom: none; }
-
-.crack-table td {
-  padding: 11px 4px;
-  font-size: 13.5px;
-}
-
-.crack-table .col-scenario {
-  color: var(--muted);
-}
-
+.crack-table td { padding: 11px 4px; font-size: 13.5px; }
+.crack-table .col-scenario { color: var(--muted); }
 .crack-table .col-speed {
   color: rgba(107,125,179,.6);
   font-family: 'JetBrains Mono', monospace;
@@ -300,7 +206,6 @@ h1 {
   padding: 0 16px;
   white-space: nowrap;
 }
-
 .crack-table .col-time {
   text-align: right;
   font-weight: 600;
@@ -310,15 +215,3 @@ h1 {
   transition: color .3s;
   white-space: nowrap;
 }
-
-/* footer */
-footer {
-  text-align: center;
-  padding: 40px 0 0;
-  font-size: 13px;
-  color: var(--muted);
-  position: relative;
-  z-index: 1;
-}
-footer a { color: var(--blue-3); text-decoration: none; }
-footer a:hover { text-decoration: underline; }

@@ -1,43 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:        #04071a;
-  --bg2:       #080e2e;
-  --blue-1:    #1a2fff;
-  --blue-2:    #3d5afe;
-  --blue-3:    #7c9dff;
-  --blue-4:    #b0c4ff;
-  --accent:    #00e5ff;
-  --text:      #e8eeff;
-  --muted:     #6b7db3;
-  --card-bg:   #0c1340;
-  --card-border: rgba(61, 90, 254, 0.3);
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ── background blobs ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 10%, rgba(26,47,255,.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(0,229,255,.10) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(61,90,254,.08) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
+@import url('./shared.css');
 
 /* ── stars ── */
 .stars {
@@ -121,25 +82,6 @@ h1 {
   line-height: 1.6;
 }
 
-/* ── section label ── */
-.section-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--blue-3);
-  margin: 48px 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(61,90,254,.4), transparent);
-}
-
 /* ── card grid ── */
 .grid {
   display: grid;
@@ -174,8 +116,6 @@ h1 {
   box-shadow: 0 8px 32px rgba(26,47,255,.2), 0 0 0 1px rgba(0,229,255,.08);
 }
 .card:hover::before { opacity: 1; }
-
-/* glow corner on hover */
 .card::after {
   content: '';
   position: absolute;
@@ -195,7 +135,6 @@ h1 {
   display: block;
   line-height: 1;
 }
-
 .card-title {
   font-family: 'Syne', sans-serif;
   font-size: 18px;
@@ -203,7 +142,6 @@ h1 {
   color: #fff;
   margin-bottom: 6px;
 }
-
 .card-desc {
   font-size: 13.5px;
   color: var(--muted);
@@ -231,22 +169,7 @@ h1 {
   border: 1px solid rgba(0,229,255,.3);
 }
 
-/* ── footer ── */
-footer {
-  text-align: center;
-  padding: 40px 0 20px;
-  font-size: 13px;
-  color: var(--muted);
-  position: relative;
-  z-index: 1;
-}
-footer a {
-  color: var(--blue-3);
-  text-decoration: none;
-}
-footer a:hover { text-decoration: underline; }
-
-/* ── floating orb cursor highlight ── */
+/* ── cursor glow ── */
 .cursor-glow {
   position: fixed;
   width: 400px; height: 400px;
