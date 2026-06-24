@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fake-O-Meter — Playground</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="wrapper">
+
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+    Zurück
+  </a>
+
+  <!-- ── Start screen ── -->
+  <div id="startScreen">
+    <div class="start-content">
+      <span class="start-icon">🤥</span>
+      <h2>Fake-O-Meter</h2>
+      <p>
+        Wir zeigen dir echte und erfundene Trump-Zitate.<br>
+        Du entscheidest: <strong style="color:var(--green)">Echt</strong> oder <strong style="color:var(--red)">Fake</strong>?<br>
+        Klingt einfach – ist es nicht.
+      </p>
+      <div class="start-meta">
+        <span class="meta-chip">📋 22 Aussagen</span>
+        <span class="meta-chip">🎯 ~50/50 Echt/Fake</span>
+        <span class="meta-chip">🔗 Quellen für echte Zitate</span>
+      </div>
+      <button class="btn btn-accent" onclick="startGame()">Jetzt spielen →</button>
+    </div>
+  </div>
+
+  <!-- ── Game screen ── -->
+  <div id="gameScreen" class="hidden">
+
+    <div class="game-hud">
+      <div class="hud-row">
+        <div class="score-display"><strong id="scoreCorrect">0</strong> / <span id="scoreTotal">0</span> korrekt</div>
+        <div id="questionCounter">Frage 1 / 22</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="quote-card" id="quoteCard">
+      <div class="quote-type-badge" id="quoteBadge">🐦 Tweet</div>
+      <blockquote class="quote-text" id="quoteText"></blockquote>
+      <div class="quote-date" id="quoteDate"></div>
+    </div>
+
+    <div class="reveal-area hidden" id="revealArea">
+      <div class="verdict" id="verdict"></div>
+      <div id="sourceInfo"></div>
+      <div id="quoteNote" class="hidden"></div>
+    </div>
+
+    <div class="guess-buttons" id="guessButtons">
+      <button class="btn-echt" onclick="guess(true)">✅ Echt</button>
+      <button class="btn-fake" onclick="guess(false)">🚫 Fake</button>
+    </div>
+
+    <div class="next-area hidden" id="nextArea">
+      <button class="btn btn-primary" onclick="nextQuestion()">Weiter →</button>
+    </div>
+
+  </div>
+
+  <!-- ── End screen ── -->
+  <div id="endScreen" class="hidden">
+    <div class="end-content">
+      <span class="start-icon" id="endEmoji">🏆</span>
+      <div class="end-score-big" id="endScore">0 / 22</div>
+      <div class="end-pct" id="endPct">0%</div>
+      <div class="end-rating-title" id="endTitle"></div>
+      <p id="endText"></p>
+      <div class="end-actions">
+        <a class="btn btn-outline" href="../index.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Zurück
+        </a>
+        <button class="btn btn-accent" onclick="restartGame()">Nochmal spielen</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  gemacht mit ♥ &mdash; <a href="../index.html">Playground</a>
+</footer>
+
+<script src="game.js"></script>
+</body>
+</html>
