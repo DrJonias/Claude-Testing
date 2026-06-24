@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passwort-Entropie — Playground</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrapper">
+
+  <a class="back" href="../index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+    Zurück
+  </a>
+
+  <header>
+    <span class="page-icon">🔐</span>
+    <h1>Passwort-Entropie</h1>
+    <p class="subtitle">Wie lange würde ein Brute-Force-Angriff dauern?<br>Gib ein Passwort ein und sieh es in Echtzeit.</p>
+  </header>
+
+  <!-- Input -->
+  <div class="card">
+    <label class="input-label" for="pw-input">Passwort</label>
+    <div class="input-wrap">
+      <input
+        id="pw-input"
+        class="pw-input"
+        type="password"
+        placeholder="Passwort eingeben …"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="toggle-vis" id="toggle-vis" aria-label="Passwort anzeigen">
+        <!-- eye open -->
+        <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <!-- eye closed -->
+        <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+          <line x1="1" y1="1" x2="23" y2="23"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="strength-row">
+      <div class="strength-bar-track">
+        <div class="strength-bar-fill" id="strength-fill"></div>
+      </div>
+      <span class="strength-label" id="strength-label"></span>
+    </div>
+
+    <div class="pool-row">
+      <span class="pool-chip" id="chip-lower">a–z (26)</span>
+      <span class="pool-chip" id="chip-upper">A–Z (26)</span>
+      <span class="pool-chip" id="chip-digits">0–9 (10)</span>
+      <span class="pool-chip" id="chip-symbol">Sonderzeichen (32)</span>
+    </div>
+  </div>
+
+  <!-- Entropy -->
+  <div class="entropy-card">
+    <div class="entropy-number" id="entropy-number">—</div>
+    <div class="entropy-info">
+      <div class="entropy-title">Bits Entropie</div>
+      <p class="entropy-desc" id="entropy-desc">Gib ein Passwort ein, um die Entropie zu berechnen.</p>
+    </div>
+  </div>
+
+  <!-- Crack times -->
+  <div class="crack-card">
+    <div class="crack-title">Brute-Force-Dauer (Ø)</div>
+    <table class="crack-table">
+      <tbody>
+        <tr>
+          <td class="col-scenario">Online-Angriff</td>
+          <td class="col-speed">10³ /s</td>
+          <td class="col-time" id="time-online">—</td>
+        </tr>
+        <tr>
+          <td class="col-scenario">Offline-Cracker</td>
+          <td class="col-speed">10⁸ /s</td>
+          <td class="col-time" id="time-fast">—</td>
+        </tr>
+        <tr>
+          <td class="col-scenario">GPU-Rig (RTX-Cluster)</td>
+          <td class="col-speed">10¹¹ /s</td>
+          <td class="col-time" id="time-gpu">—</td>
+        </tr>
+        <tr>
+          <td class="col-scenario">Nation-State-Cluster</td>
+          <td class="col-speed">10¹⁴ /s</td>
+          <td class="col-time" id="time-cluster">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  gemacht mit ♥ &mdash; <a href="../index.html">Playground</a>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

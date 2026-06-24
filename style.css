@@ -102,7 +102,7 @@ header {
 
 h1 {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(52px, 10vw, 96px);
+  font-size: clamp(48px, 9vw, 78px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -.03em;
