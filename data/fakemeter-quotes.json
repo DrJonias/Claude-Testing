@@ -1,0 +1,178 @@
+[
+  {
+    "id": 1,
+    "text": "„Trotz des ständigen negativen covfefe der Presse…"",
+    "isReal": true,
+    "sourceLabel": "Twitter, 31. Mai 2017",
+    "source": "https://www.bbc.com/news/world-us-canada-40093836",
+    "note": "Dieser unvollendete Tweet wurde um Mitternacht abgeschickt und erst Stunden später gelöscht. Original: „Despite the constant negative press covfefe""
+  },
+  {
+    "id": 2,
+    "text": "„Ich könnte mitten auf der Fifth Avenue stehen und jemanden erschießen, und ich würde keinen einzigen Wähler verlieren. Okay? Das ist unglaublich."",
+    "isReal": true,
+    "sourceLabel": "Wahlkampfveranstaltung, Iowa, Januar 2016",
+    "source": "https://www.bbc.com/news/world-us-canada-35370455",
+    "note": "Original: „I could stand in the middle of Fifth Avenue and shoot somebody and I wouldn't lose any voters." — gesagt auf einer Wahlkampfveranstaltung in Iowa."
+  },
+  {
+    "id": 3,
+    "text": "„Niemand wusste, dass Gesundheitsversorgung so kompliziert sein kann."",
+    "isReal": true,
+    "sourceLabel": "Weißes Haus, Februar 2017",
+    "source": "https://www.reuters.com/article/us-usa-trump-healthcare/trump-says-nobody-knew-healthcare-could-be-so-complicated-idUSKBN1673HX",
+    "note": "Original: „Nobody knew healthcare could be so complicated." — gesagt in einem Treffen mit US-Gouverneuren."
+  },
+  {
+    "id": 4,
+    "text": "„Das Konzept der globalen Erwärmung wurde von und für die Chinesen erfunden, um die US-Industrie nicht wettbewerbsfähig zu machen."",
+    "isReal": true,
+    "sourceLabel": "Twitter, November 2012",
+    "source": "https://www.bbc.com/news/world-us-canada-52494990",
+    "note": "Original: „The concept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive." — ein Tweet aus dem Jahr 2012."
+  },
+  {
+    "id": 5,
+    "text": "„Sorry, Verlierer und Neider, aber mein IQ gehört zu den höchsten – und ihr alle wisst das! Bitte fühlt euch nicht so dumm oder unsicher, es ist nicht eure Schuld."",
+    "isReal": true,
+    "sourceLabel": "Twitter, Mai 2013",
+    "source": "https://www.politifact.com/factchecks/2016/aug/17/donald-trump/trumps-claim-he-has-one-highest-iqs-unverified/",
+    "note": "Original: „Sorry losers and haters, but my I.Q. is one of the highest—and you all know it! Please don't feel so stupid or insecure, it's not your fault""
+  },
+  {
+    "id": 6,
+    "text": "„Zwei Korinther, 3:17 – das ist das ganze Spiel. Stimmt das? Ist das euer Lieblingsvers?"",
+    "isReal": true,
+    "sourceLabel": "Liberty University, Januar 2016",
+    "source": "https://www.theguardian.com/us-news/2016/jan/18/trump-bibles-two-corinthians-liberty-university",
+    "note": "Original: „Two Corinthians, 3:17, that's the whole ballgame." — Christen sagen üblicherweise „Second Corinthians", nicht „Two Corinthians"."
+  },
+  {
+    "id": 7,
+    "text": "„Dann sehe ich das Desinfektionsmittel, das es in einer Minute erledigt. Und gibt es eine Möglichkeit, so etwas zu tun – durch eine Injektion ins Innere oder fast wie eine Reinigung?"",
+    "isReal": true,
+    "sourceLabel": "Pressekonferenz Weißes Haus, April 2020",
+    "source": "https://www.reuters.com/article/us-health-coronavirus-trump-disinfectant/trump-suggests-injecting-disinfectants-to-beat-coronavirus-idUSKCN2252BE",
+    "note": "Original: „Is there a way we can do something like that, by injection inside or almost a cleaning?" — Ärzte und Hersteller warnten danach dringend vor Desinfektionsmittel-Injektionen."
+  },
+  {
+    "id": 8,
+    "text": "„Der Lärm verursacht Krebs." (über Windräder)",
+    "isReal": true,
+    "sourceLabel": "NRCC-Dinner, März 2019",
+    "source": "https://www.theguardian.com/us-news/2019/apr/03/trump-windmills-noise-causes-cancer-claim",
+    "note": "Original: „They say the noise causes cancer." — Wissenschaftler widersprachen sofort. Lärm verursacht keinen Krebs."
+  },
+  {
+    "id": 9,
+    "text": "„Nur ich allein kann es reparieren."",
+    "isReal": true,
+    "sourceLabel": "Nominierungsrede RNC, Juli 2016",
+    "source": "https://time.com/4425002/republican-convention-trump-rnc-speech/",
+    "note": "Original: „I alone can fix it." — aus seiner Rede zur Annahme der republikanischen Präsidentschaftsnominierung."
+  },
+  {
+    "id": 10,
+    "text": "„Ich weiß mehr über ISIS als die Generäle. Glaubt mir."",
+    "isReal": true,
+    "sourceLabel": "Wahlkampfveranstaltung, November 2015",
+    "source": "https://www.politifact.com/truth-o-meter/statements/2015/nov/12/donald-trump/trump-says-he-knows-more-about-isis-generals/",
+    "note": "Original: „I know more about ISIS than the generals do. Believe me." — Militärexperten kommentierten dies mit Verblüffung."
+  },
+  {
+    "id": 11,
+    "text": "„Oh, schaut mal, mein Afroamerikaner da drüben! Seht ihr das?"",
+    "isReal": true,
+    "sourceLabel": "Wahlkampfveranstaltung, Kalifornien, Juni 2016",
+    "source": "https://www.theguardian.com/us-news/2016/jun/03/donald-trump-rally-look-at-my-african-american",
+    "note": "Original: „Oh, look at my African-American over here!" — gesagt über einen schwarzen Unterstützer in der Menge."
+  },
+  {
+    "id": 12,
+    "text": "„Ich bin sehr hoch gebildet. Ich kenne Wörter. Ich habe die besten Wörter."",
+    "isReal": true,
+    "sourceLabel": "Wahlkampfveranstaltung, Reno, Dezember 2015",
+    "source": "https://www.theguardian.com/us-news/2015/dec/30/trump-i-have-the-best-words",
+    "note": "Original: „I'm very highly educated. I know words, I have the best words." — seitdem eines seiner meistzitierten Zitate."
+  },
+  {
+    "id": 13,
+    "text": "„Haie sind sehr unfair. Sie schwimmen immer in die falsche Richtung. Niemand kennt Haie besser als ich – niemand."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Klingt plausibel, wurde aber nie gesagt."
+  },
+  {
+    "id": 14,
+    "text": "„Mein Blut ist perfekt. Die Ärzte haben so etwas noch nie gesehen. Wirklich außergewöhnliches Blut – das Beste."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Trump hat sich oft gelobt, aber dieses spezifische Zitat existiert nicht."
+  },
+  {
+    "id": 15,
+    "text": "„Der Mond ist viel größer als die Sonne. Die meisten Leute wissen das nicht, aber ich sage es Ihnen – viel, viel größer."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Die Sonne ist etwa 400-mal größer als der Mond."
+  },
+  {
+    "id": 16,
+    "text": "„Dinosaurier waren prächtige Tiere. Sehr mächtig, sehr stark. Wahrscheinlich eher republikanisch veranlagt, wenn Sie mich fragen."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden – aber zugegeben, es klingt erschreckend echt."
+  },
+  {
+    "id": 17,
+    "text": "„Ich bin der beste Golfspieler, der je Präsident war. Tiger Woods hat mich nach Tipps gefragt. Das ist wahr. Er rief mich an."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Trump spielt viel Golf und prahlte damit, aber dieses Zitat ist nicht dokumentiert."
+  },
+  {
+    "id": 18,
+    "text": "„Ich habe einmal vier Minuten die Luft angehalten. Der Arzt war schockiert. Er sagte: ‚Herr Trump, ich habe so etwas noch nie gesehen.'"",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Ein klassisches Trump-Muster: Arzt-Zitat + Superlativ = klingt echt."
+  },
+  {
+    "id": 19,
+    "text": "„Die Pyramiden wurden von genialen Menschen gebaut – den absolut besten Menschen. Ich hätte sie schneller gebaut. Viel schneller."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Inspiriert von Ben Carson, der behauptete, die Pyramiden seien Getreidespeicher – aber dieses Zitat stammt nicht von Trump."
+  },
+  {
+    "id": 20,
+    "text": "„Niemand hat schöneres Haar als ich. Das ist echtes Haar – 100 Prozent. Glaubt mir. Viele Leute fragen mich danach."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Sein Haar wurde oft diskutiert, aber dieses genaue Zitat existiert nicht."
+  },
+  {
+    "id": 21,
+    "text": "„Ich war als Kind ein Mathematikgenie. Meine Lehrer waren beeindruckt. Ich rechnete schneller als alle anderen – wirklich schnell."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Trump hat Wharton besucht und das oft erwähnt, aber dieses Kindheitszitat existiert nicht."
+  },
+  {
+    "id": 22,
+    "text": "„Oktopusse sind faszinierend. Sehr intelligent – vielleicht intelligenter als viele Politiker. Nicht alle, aber viele."",
+    "isReal": false,
+    "sourceLabel": null,
+    "source": null,
+    "note": "Erfunden. Oktopusse sind tatsächlich sehr intelligent, aber Trump hat das nie gesagt."
+  }
+]
